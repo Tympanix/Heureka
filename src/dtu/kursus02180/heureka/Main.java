@@ -12,11 +12,11 @@ public class Main {
 
         Graph graph = new Graph();
 
-        File file = new File("manhattan.txt");
+        File file = new File("DataPoints.txt");
         Parser.parse(file, graph);
 
-        Node nodeSource = graph.findNode(0, 0);
-        Node nodeGoal = graph.findNode(5, 5);
+        Node nodeSource = graph.findNode(10, 70);
+        Node nodeGoal = graph.findNode(60, 150);
 
         System.out.println("Running algortihm!");
         runAStar(graph, nodeSource, nodeGoal);
@@ -45,7 +45,6 @@ public class Main {
                 Node nextNode = edge.to;
 
                 nextNode.relax(node, goal, priorityQueue);
-//                priorityQueue.add(nextNode);
 
                 if (nextNode.equals(goal)) return true;
             }
