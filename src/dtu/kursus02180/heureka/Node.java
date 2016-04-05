@@ -1,9 +1,12 @@
 package dtu.kursus02180.heureka;
 
 
+import java.util.PriorityQueue;
+
 public class Node implements Comparable<Node> {
 
     float distance;
+    float distanceToGoal;
     Node parent;
     int x;
     int y;
@@ -13,17 +16,26 @@ public class Node implements Comparable<Node> {
         this.y = y;
         this.parent = null;
         this.distance = Float.MAX_VALUE;
+        this.distanceToGoal = 0;
     }
 
     public boolean isSeen(){
         return distance != Float.MAX_VALUE;
     }
 
-    public void setDistanceToGoal(Node goal){
-        distance = getDistance(goal);
+    public void setGoalDistance(Node goal){
+        distance = getDistanceTo(goal);
     }
 
-    public int getDistance(Node other){
+    public void setDistance(float distance){
+        this.distance = distance;
+    }
+
+    public float getHeuristicDistance(){
+        return this.distance + this.distanceToGoal;
+    }
+
+    public int getDistanceTo(Node other){
         int deltaX = this.x - other.x;
         int deltaY = this.y - other.y;
         return (deltaX*deltaX + deltaY*deltaY);
@@ -31,7 +43,7 @@ public class Node implements Comparable<Node> {
 
     @Override
     public int compareTo(Node o) {
-        return Float.compare(distance, o.distance);
+        return Float.compare(getHeuristicDistance(), o.getHeuristicDistance());
     }
 
     @Override
@@ -48,5 +60,15 @@ public class Node implements Comparable<Node> {
         }
 
         return super.equals(obj);
+    }
+
+    public void relax(Node parent, Node goal, PriorityQueue<Node> priorityQueue) {
+        if (this.distance > parent.distance + parent.getDistanceTo(this)){
+            this.distance = parent.distance + parent.getDistanceTo(this);
+            this.parent = parent;
+            this.distanceToGoal = this.getDistanceTo(goal);
+            priorityQueue.remove(this);
+            priorityQueue.add(this);
+        }
     }
 }

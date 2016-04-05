@@ -2,6 +2,8 @@ package dtu.kursus02180.heureka;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.PriorityQueue;
 
 public class Main {
@@ -28,21 +30,22 @@ public class Main {
     public static boolean runAStar(Graph graph, Node source, Node goal){
         PriorityQueue<Node> priorityQueue = new PriorityQueue<Node>();
 
+        for (Map.Entry<Node, LinkedList<Edge>> entry : graph.incidenceList.entrySet()){
+            priorityQueue.add(entry.getKey());
+        }
+
         source.distance = 0;
         priorityQueue.add(source);
 
 
         while (!priorityQueue.isEmpty()){
             Node node = priorityQueue.poll();
-            System.out.println(node);
 
             for (Edge edge : graph.getIncidenceList(node)){
                 Node nextNode = edge.to;
-                if (nextNode.isSeen()) continue;
 
-                nextNode.setDistanceToGoal(goal);
-                nextNode.parent = node;
-                priorityQueue.add(nextNode);
+                nextNode.relax(node, goal, priorityQueue);
+//                priorityQueue.add(nextNode);
 
                 if (nextNode.equals(goal)) return true;
             }
@@ -52,13 +55,9 @@ public class Main {
 
     }
 
-    public static void showPath(Node goal){
-        Node parent = goal.parent;
-        System.out.println(goal);
-
-        while(parent != null){
-            System.out.println(parent);
-            parent = parent.parent;
-        }
+    public static void showPath(Node node){
+        if (node == null) return;
+        showPath(node.parent);
+        System.out.println(node);
     }
 }
