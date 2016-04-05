@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AlgorithmAStar.iml" filepath="$PROJECT_DIR$/AlgorithmAStar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Heureka.iml" filepath="$PROJECT_DIR$/Heureka.iml" />
     </modules>
   </component>
 </project>
