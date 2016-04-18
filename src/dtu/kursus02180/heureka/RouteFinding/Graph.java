@@ -1,4 +1,4 @@
-package dtu.kursus02180.heureka;
+package dtu.kursus02180.heureka.RouteFinding;
 
 import java.util.HashMap;
 import java.util.LinkedList;

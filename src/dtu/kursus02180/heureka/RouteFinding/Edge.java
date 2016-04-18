@@ -1,4 +1,4 @@
-package dtu.kursus02180.heureka;
+package dtu.kursus02180.heureka.RouteFinding;
 
 public class Edge {
 

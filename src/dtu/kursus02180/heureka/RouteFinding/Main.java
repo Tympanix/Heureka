@@ -1,4 +1,4 @@
-package dtu.kursus02180.heureka;
+package dtu.kursus02180.heureka.RouteFinding;
 
 import java.io.File;
 import java.io.IOException;
