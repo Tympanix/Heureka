@@ -9,6 +9,8 @@ public class Clause extends Node {
     HashSet<Literal> positiveLiterals = new HashSet<Literal>();
     HashSet<Literal> negativeLiterals = new HashSet<Literal>();
 
+    Clause ruleUsed = null;
+
     public Clause(){
         super();
     }
@@ -38,6 +40,11 @@ public class Clause extends Node {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
 
+        if (isEmptyClause()){
+            stringBuilder.append("<Empty>");
+            return stringBuilder.toString();
+        }
+
         for (Literal l : positiveLiterals){
             stringBuilder.append(l.name).append(" ");
         }
@@ -58,6 +65,9 @@ public class Clause extends Node {
 
     public Clause applyRule(Clause rule) {
         Clause resultClause = new Clause();
+
+        // Set the new clause to have been deducted by this rule
+        resultClause.ruleUsed = rule;
 
         // Clone this clause
         resultClause.positiveLiterals.addAll(this.positiveLiterals);

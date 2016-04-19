@@ -11,6 +11,11 @@ public abstract class Node implements Comparable<Node> {
 
     float distance;
     float distanceToGoal;
+
+    public Node getParent() {
+        return parent;
+    }
+
     Node parent;
 
     public Node(){

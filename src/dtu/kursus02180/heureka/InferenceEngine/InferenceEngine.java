@@ -42,4 +42,10 @@ public class InferenceEngine {
 
         return null;
     }
+
+    public static void showPath(Clause node){
+        if (node == null) return;
+        showPath((Clause) node.getParent());
+        System.out.format("%-12sRule: %-12s\n", node, node.ruleUsed);
+    }
 }

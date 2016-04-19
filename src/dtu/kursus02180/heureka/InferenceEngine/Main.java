@@ -22,8 +22,9 @@ public class Main {
         Clause solved = InferenceEngine.solve(knowledgeBase, solve, graph);
 
         System.out.println("SHOW PATH!");
-        graph.showPath(solved);
 
-        //System.out.println(knowledgeBase);
+        InferenceEngine.showPath(solved);
+        //graph.showPath(solved);
+
     }
 }
