@@ -4,12 +4,14 @@ import dtu.kursus02180.heureka.Graph.Edge;
 import dtu.kursus02180.heureka.Graph.Graph;
 import dtu.kursus02180.heureka.Graph.Node;
 
+import java.util.HashSet;
 import java.util.PriorityQueue;
 
 public class InferenceEngine {
 
     public static Clause solve(KnowledgeBase knowledgeBase, Clause solveOriginal, Graph graph){
 
+        HashSet<Clause> explored = new HashSet<Clause>();
 
         // Negate solving clause
         Clause solve = new Clause();
@@ -28,6 +30,10 @@ public class InferenceEngine {
             for (Clause rule : knowledgeBase.list){
 
                 Clause newResolvent = clause.applyRule(rule);
+
+                if (!explored.add(newResolvent)){
+                    continue;
+                }
 
                 graph.addNode(newResolvent);
                 Edge newEdge = graph.addEdge(clause, newResolvent, 1);

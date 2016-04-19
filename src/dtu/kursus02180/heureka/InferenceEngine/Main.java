@@ -15,7 +15,7 @@ public class Main {
         KowalskiParser.parse(file, knowledgeBase);
 
         Clause solve = new Clause();
-        solve.addLiteral(new Literal("a", true));
+        solve.addLiteral(new Literal("e", true));
 
         Graph graph = new Graph();
 

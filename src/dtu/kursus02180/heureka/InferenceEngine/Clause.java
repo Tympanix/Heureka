@@ -73,14 +73,12 @@ public class Clause extends Node {
         resultClause.positiveLiterals.addAll(this.positiveLiterals);
         resultClause.negativeLiterals.addAll(this.negativeLiterals);
 
-        System.out.println("Copy: " + resultClause);
+        System.out.println("Clause: " + resultClause);
         System.out.println("Rule: " + rule);
 
         // Add literals from rule
         resultClause.positiveLiterals.addAll(rule.positiveLiterals);
         resultClause.negativeLiterals.addAll(rule.negativeLiterals);
-
-        System.out.println("Merged: " + resultClause);
 
         // Remove contradicting literals
         resultClause.removeContradicting();
@@ -131,5 +129,16 @@ public class Clause extends Node {
     @Override
     public int hashCode() {
         return getUniqueIdentifier().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Clause){
+            Clause clause = (Clause) obj;
+            return (positiveLiterals.containsAll(clause.positiveLiterals) &&
+                    negativeLiterals.containsAll(clause.negativeLiterals));
+        } else {
+            return super.equals(obj);
+        }
     }
 }
