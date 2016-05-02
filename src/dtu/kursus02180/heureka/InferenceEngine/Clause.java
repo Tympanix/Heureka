@@ -6,8 +6,8 @@ import java.util.*;
 
 public class Clause extends Node {
 
-    HashSet<Literal> positiveLiterals = new HashSet<Literal>();
-    HashSet<Literal> negativeLiterals = new HashSet<Literal>();
+    HashSet<Literal> conclusion = new HashSet<Literal>();
+    HashSet<Literal> premise = new HashSet<Literal>();
 
     Clause ruleUsed = null;
 
@@ -15,24 +15,45 @@ public class Clause extends Node {
         super();
     }
 
+    public int getPremiseLength(){
+        return premise.size();
+    }
+
+    public boolean isKnownFact(){
+        return conclusion.size() == 1 && premise.isEmpty();
+    }
+
+    public Literal getKnownFact(){
+        if (isKnownFact()){
+            Iterator<Literal> iterator = conclusion.iterator();
+            return iterator.next();
+        } else {
+            return null;
+        }
+    }
+
+    public float getClauseLength(){
+        return conclusion.size() + premise.size();
+    }
+
     @Override
-    public float getDistanceTo(Node goal) {
-        return positiveLiterals.size() + negativeLiterals.size();
+    public float getHeuristicDistance() {
+        return this.getDistance() + 2*this.getClauseLength();
     }
 
     public void addLiteral(Literal literal){
         if (literal.isPositive){
-            positiveLiterals.add(literal);
+            conclusion.add(literal);
         } else {
-            negativeLiterals.add(literal);
+            premise.add(literal);
         }
     }
 
     public void removeLiteral(Literal literal){
         if (literal.isPositive){
-            positiveLiterals.remove(literal);
+            conclusion.remove(literal);
         } else {
-            negativeLiterals.remove(literal);
+            premise.remove(literal);
         }
     }
 
@@ -45,17 +66,17 @@ public class Clause extends Node {
             return stringBuilder.toString();
         }
 
-        for (Literal l : positiveLiterals){
+        for (Literal l : conclusion){
             stringBuilder.append(l.name).append(" ");
         }
 
-        if (negativeLiterals.isEmpty()){
+        if (premise.isEmpty()){
             return stringBuilder.toString();
         }
 
         stringBuilder.append("if ");
 
-        for (Literal l : negativeLiterals){
+        for (Literal l : premise){
             stringBuilder.append(l.name).append(" ");
         }
 
@@ -70,46 +91,44 @@ public class Clause extends Node {
         resultClause.ruleUsed = rule;
 
         // Clone this clause
-        resultClause.positiveLiterals.addAll(this.positiveLiterals);
-        resultClause.negativeLiterals.addAll(this.negativeLiterals);
-
-        System.out.println("Clause: " + resultClause);
-        System.out.println("Rule: " + rule);
+        resultClause.conclusion.addAll(this.conclusion);
+        resultClause.premise.addAll(this.premise);
 
         // Add literals from rule
-        resultClause.positiveLiterals.addAll(rule.positiveLiterals);
-        resultClause.negativeLiterals.addAll(rule.negativeLiterals);
+        resultClause.conclusion.addAll(rule.conclusion);
+        resultClause.premise.addAll(rule.premise);
 
         // Remove contradicting literals
-        resultClause.removeContradicting();
-
-        System.out.println("Result: " + resultClause);
-        System.out.println();
+        if (!resultClause.removeContradicting()) return null;
 
         return resultClause;
     }
 
-    private void removeContradicting() {
+    private boolean removeContradicting() {
 
-        Iterator<Literal> iterator = positiveLiterals.iterator();
+        Iterator<Literal> iterator = conclusion.iterator();
+        boolean alreadyRemoved = false;
 
         while(iterator.hasNext()){
             Literal literal = iterator.next();
-            if (negativeLiterals.contains(literal)){
+            if (premise.contains(literal)){
                 iterator.remove();
-                negativeLiterals.remove(literal);
+                premise.remove(literal);
+                if (alreadyRemoved) return false;
+                alreadyRemoved = true;
             }
         }
+        return true;
     }
 
     public boolean isEmptyClause() {
-        return positiveLiterals.isEmpty() && negativeLiterals.isEmpty();
+        return conclusion.isEmpty() && premise.isEmpty();
     }
 
     public String getUniqueIdentifier(){
         StringBuilder stringBuilder = new StringBuilder();
 
-        TreeSet<Literal> positiveSorted = new TreeSet<Literal>(positiveLiterals);
+        TreeSet<Literal> positiveSorted = new TreeSet<Literal>(conclusion);
 
         for (Literal literal : positiveSorted){
             stringBuilder.append(literal.name);
@@ -117,7 +136,7 @@ public class Clause extends Node {
 
         stringBuilder.append(":");
 
-        TreeSet<Literal> negativeSorted = new TreeSet<Literal>(negativeLiterals);
+        TreeSet<Literal> negativeSorted = new TreeSet<Literal>(premise);
 
         for (Literal literal : negativeSorted){
             stringBuilder.append(literal.name);
@@ -135,8 +154,8 @@ public class Clause extends Node {
     public boolean equals(Object obj) {
         if (obj instanceof Clause){
             Clause clause = (Clause) obj;
-            return (positiveLiterals.containsAll(clause.positiveLiterals) &&
-                    negativeLiterals.containsAll(clause.negativeLiterals));
+            return (conclusion.equals(clause.conclusion) &&
+                    premise.equals(clause.premise));
         } else {
             return super.equals(obj);
         }

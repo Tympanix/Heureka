@@ -21,7 +21,7 @@ public class Main {
 
         Graph graph = new Graph();
 
-        Clause solved = InferenceEngine.solve(knowledgeBase, solve, graph);
+        Clause solved = InferenceEngine.indirectProof(knowledgeBase, solve, graph);
 
         System.out.println("SHOW PATH!");
 
