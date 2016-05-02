@@ -1,0 +1,14 @@
+water if ok-pump on-pump
+water if man-fill
+if on-pump man-fill
+man-fill on-pump
+steam if water ok-boiler on-boiler
+water if steam
+on-boiler if steam
+ok-boiler if steam
+hot-drink if steam coffee
+hot-drink if steam tea
+coffee tea
+ok-boiler
+on-boiler
+man-fill

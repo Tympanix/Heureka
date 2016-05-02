@@ -11,11 +11,13 @@ public class Main {
 
         KnowledgeBase knowledgeBase = new KnowledgeBase();
 
-        File file = new File("knowledgebase.txt");
+        File file = new File("espressomachine.txt");
         KowalskiParser.parse(file, knowledgeBase);
 
+        System.out.println(knowledgeBase);
+
         Clause solve = new Clause();
-        solve.addLiteral(new Literal("e", true));
+        solve.addLiteral(new Literal("hot-drink", true));
 
         Graph graph = new Graph();
 
@@ -24,7 +26,6 @@ public class Main {
         System.out.println("SHOW PATH!");
 
         InferenceEngine.showPath(solved);
-        //graph.showPath(solved);
 
     }
 }
