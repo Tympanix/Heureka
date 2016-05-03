@@ -8,8 +8,7 @@ on-boiler if steam
 ok-boiler if steam
 hot-drink if steam coffee
 hot-drink if steam tea
-coffee
-tea
+coffee tea
 ok-boiler
 on-boiler
 man-fill

@@ -32,6 +32,12 @@ public class Clause extends Node {
         }
     }
 
+
+    @Override
+    public Clause getParent() {
+        return (Clause) super.getParent();
+    }
+
     public float getClauseLength(){
         return conclusion.size() + premise.size();
     }

@@ -73,27 +73,13 @@ public class InferenceEngine {
 
             for (Clause rule : knowledgeBase.list){
 
-                Clause resolventClause = clause.applyRule(rule);
+                Clause resolventClause = resolveClause(graph, explored, priorityQueue, clause, rule);
+                if (resolventClause != null) return resolventClause;
 
-                if (resolventClause == null){
-                    System.out.println("Error!");
-                    continue;
-                }
-
-                if (!explored.add(resolventClause)){
-                    System.out.println("Nitte!");
-                    continue;
-                }
-
-                graph.addNode(resolventClause);
-                Edge newEdge = graph.addEdge(clause, resolventClause, 1);
-
-                resolventClause.relax(clause, newEdge, priorityQueue);
-
-                if (resolventClause.isEmptyClause()){
-                    return resolventClause;
-                }
             }
+
+            Clause resolventClause = ancesorResolution(graph, explored, priorityQueue, clause, clause.getParent());
+            if (resolventClause != null) return resolventClause;
 
             System.out.println();
 
@@ -102,9 +88,42 @@ public class InferenceEngine {
         return null;
     }
 
+    private static Clause resolveClause(Graph graph, HashSet<Clause> explored, PriorityQueue<Node> priorityQueue, Clause clause, Clause rule) {
+        Clause resolventClause = clause.applyRule(rule);
+
+        if (resolventClause == null){
+            System.out.println("Error!");
+            return null;
+        }
+
+        if (!explored.add(resolventClause)){
+            System.out.println("Nitte!");
+            return null;
+        }
+
+        graph.addNode(resolventClause);
+        Edge newEdge = graph.addEdge(clause, resolventClause, 1);
+
+        resolventClause.relax(clause, newEdge, priorityQueue);
+
+        if (resolventClause.isEmptyClause()){
+            return resolventClause;
+        }
+
+        return null;
+    }
+
+
+    public static Clause ancesorResolution(Graph graph, HashSet<Clause> explored, PriorityQueue<Node> priorityQueue, Clause clause, Clause parentClause){
+        if (parentClause == null) return null;
+        Clause resolventClause = resolveClause(graph, explored, priorityQueue, clause, parentClause);
+        if (resolventClause != null) return resolventClause;
+        return ancesorResolution(graph, explored, priorityQueue, clause, parentClause.getParent());
+    }
+
     public static void showPath(Clause node){
         if (node == null) return;
-        showPath((Clause) node.getParent());
+        showPath(node.getParent());
         System.out.format("%-37sRule: %-37s\n", node, node.ruleUsed);
     }
 
