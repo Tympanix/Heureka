@@ -1,2 +1,2 @@
-i r if e
+if e i r
 if i r

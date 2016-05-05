@@ -2,36 +2,32 @@ package dtu.kursus02180.heureka.InferenceEngine;
 
 import dtu.kursus02180.heureka.Graph.Node;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.TreeSet;
+import java.util.function.Function;
 
 public class Clause extends Node {
 
     HashSet<Literal> conclusion = new HashSet<Literal>();
     HashSet<Literal> premise = new HashSet<Literal>();
+    Function<Clause, Float> heuristicFunction;
 
     Clause ruleUsed = null;
+
+    public Clause(Function<Clause, Float> heuristicFunction){
+        super();
+        this.heuristicFunction = heuristicFunction;
+    }
 
     public Clause(){
         super();
     }
 
-    public int getPremiseLength(){
-        return premise.size();
+    @Override
+    public int compareTo(Node o) {
+        return Float.compare(heuristicFunction.apply(this), heuristicFunction.apply((Clause) o));
     }
-
-    public boolean isKnownFact(){
-        return conclusion.size() == 1 && premise.isEmpty();
-    }
-
-    public Literal getKnownFact(){
-        if (isKnownFact()){
-            Iterator<Literal> iterator = conclusion.iterator();
-            return iterator.next();
-        } else {
-            return null;
-        }
-    }
-
 
     @Override
     public Clause getParent() {
@@ -52,14 +48,6 @@ public class Clause extends Node {
             conclusion.add(literal);
         } else {
             premise.add(literal);
-        }
-    }
-
-    public void removeLiteral(Literal literal){
-        if (literal.isPositive){
-            conclusion.remove(literal);
-        } else {
-            premise.remove(literal);
         }
     }
 
@@ -91,7 +79,7 @@ public class Clause extends Node {
     }
 
     public Clause applyRule(Clause rule) {
-        Clause resultClause = new Clause();
+        Clause resultClause = new Clause(this.heuristicFunction);
 
         // Set the new clause to have been deducted by this rule
         resultClause.ruleUsed = rule;
@@ -125,6 +113,24 @@ public class Clause extends Node {
             }
         }
         return true;
+    }
+
+    public float getLiteralsNotIn(Clause clause){
+        float length = this.getClauseLength();
+
+        for (Literal literal : this.premise){
+            if (clause.premise.contains(literal)){
+                length--;
+            }
+        }
+
+        for (Literal literal : this.conclusion){
+            if (clause.conclusion.contains(literal)){
+                length--;
+            }
+        }
+
+        return length;
     }
 
     public boolean isEmptyClause() {

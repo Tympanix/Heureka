@@ -1,8 +1,6 @@
 package dtu.kursus02180.heureka.Graph;
 
 
-import dtu.kursus02180.heureka.InferenceEngine.Clause;
-
 import java.util.PriorityQueue;
 
 public abstract class Node implements Comparable<Node> {
@@ -38,7 +36,6 @@ public abstract class Node implements Comparable<Node> {
         if (this.distance > parent.distance + edge.weight){
             this.distance = parent.distance + edge.weight;
             this.parent = parent;
-            System.out.println("Got: " + this + " Heuristic: " + this.getHeuristicDistance());
             priorityQueue.remove(this);
             priorityQueue.add(this);
         }
