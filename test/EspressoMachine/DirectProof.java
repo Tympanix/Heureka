@@ -11,7 +11,7 @@ import java.io.IOException;
 public class DirectProof {
 
     public static void main(String[] args) throws IOException {
-        File file = new File("espressomachine.txt");
+        File file = new File("data/espressomachine.txt");
         String solve = "hot-drink";
         InferenceEngine.runDirectProof(file, solve);
     }

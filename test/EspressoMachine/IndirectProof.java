@@ -8,7 +8,7 @@ import java.io.IOException;
 public class IndirectProof {
 
     public static void main(String[] args) throws IOException {
-        File knowledgebase = new File("espressomachine.txt");
+        File knowledgebase = new File("data/espressomachine.txt");
         String solve = "hot-drink";
         InferenceEngine.runIndirectProof(knowledgebase, solve);
     }
