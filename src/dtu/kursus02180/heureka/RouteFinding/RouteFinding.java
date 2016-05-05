@@ -1,31 +1,10 @@
 package dtu.kursus02180.heureka.RouteFinding;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-public class Main {
-
-    public static void main(String[] args) throws IOException {
-
-        Graph graph = new Graph();
-
-        File file = new File("DataPoints.txt");
-        Parser.parse(file, graph);
-
-        Node nodeSource = graph.findNode(10, 70);
-        Node nodeGoal = graph.findNode(60, 150);
-
-        System.out.println("Running algortihm!");
-        runAStar(graph, nodeSource, nodeGoal);
-
-        System.out.println("Path:");
-        showPath(nodeGoal);
-
-    }
-
+public class RouteFinding {
 
     public static boolean runAStar(Graph graph, Node source, Node goal){
         PriorityQueue<Node> priorityQueue = new PriorityQueue<Node>();

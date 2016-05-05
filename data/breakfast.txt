@@ -1,0 +1,10 @@
+breakfast if hotdrink juice food
+breakfast if food hotdrink
+hotdrink if cream coffee
+hotdrink if tea
+food if toast butter
+food if egg
+coffee
+tea
+toast
+butter
