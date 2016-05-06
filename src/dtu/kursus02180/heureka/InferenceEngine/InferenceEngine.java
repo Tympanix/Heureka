@@ -21,6 +21,7 @@ public class InferenceEngine {
         IndirectProof indirectProof = new IndirectProof(knowledgeBase);
         Clause solved = indirectProof.run(solve);
 
+        System.out.println("Path:");
         showPath(solved);
     }
 

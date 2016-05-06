@@ -1,9 +1,9 @@
 package dtu.kursus02180.heureka.Graph;
 
 
-import java.util.PriorityQueue;
+import java.util.Queue;
 
-public abstract class Node implements Comparable<Node> {
+public abstract class Node {
 
     float distance;
     Node parent;
@@ -25,19 +25,13 @@ public abstract class Node implements Comparable<Node> {
         this.distance = distance;
     }
 
-    public abstract float getHeuristicDistance();
-
-    @Override
-    public int compareTo(Node o) {
-        return Float.compare(this.getHeuristicDistance(), o.getHeuristicDistance());
-    }
-
-    public void relax(Node parent, Edge edge, PriorityQueue<Node> priorityQueue) {
+    @SuppressWarnings("unchecked")
+    public <T extends Node> void relax(T parent, Edge edge, Queue<T> queue) {
         if (this.distance > parent.distance + edge.weight){
             this.distance = parent.distance + edge.weight;
             this.parent = parent;
-            priorityQueue.remove(this);
-            priorityQueue.add(this);
+            queue.remove(this);
+            queue.add((T) this);
         }
     }
 }

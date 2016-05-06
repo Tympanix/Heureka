@@ -1,32 +1,22 @@
 package dtu.kursus02180.heureka.InferenceEngine;
 
+import dtu.kursus02180.heureka.Graph.Edge;
 import dtu.kursus02180.heureka.Graph.Node;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.PriorityQueue;
 import java.util.TreeSet;
-import java.util.function.Function;
 
 public class Clause extends Node {
 
-    HashSet<Literal> conclusion = new HashSet<Literal>();
-    HashSet<Literal> premise = new HashSet<Literal>();
-    Function<Clause, Float> heuristicFunction;
+    HashSet<Literal> conclusion = new HashSet<>();
+    HashSet<Literal> premise = new HashSet<>();
 
     Clause ruleUsed = null;
 
-    public Clause(Function<Clause, Float> heuristicFunction){
-        super();
-        this.heuristicFunction = heuristicFunction;
-    }
-
     public Clause(){
         super();
-    }
-
-    @Override
-    public int compareTo(Node o) {
-        return Float.compare(heuristicFunction.apply(this), heuristicFunction.apply((Clause) o));
     }
 
     @Override
@@ -36,11 +26,6 @@ public class Clause extends Node {
 
     public float getClauseLength(){
         return conclusion.size() + premise.size();
-    }
-
-    @Override
-    public float getHeuristicDistance() {
-        return this.getDistance() + 2*this.getClauseLength();
     }
 
     public void addLiteral(Literal literal){
@@ -79,7 +64,7 @@ public class Clause extends Node {
     }
 
     public Clause applyRule(Clause rule) {
-        Clause resultClause = new Clause(this.heuristicFunction);
+        Clause resultClause = new Clause();
 
         // Set the new clause to have been deducted by this rule
         resultClause.ruleUsed = rule;
@@ -156,6 +141,15 @@ public class Clause extends Node {
 
         return stringBuilder.toString();
     }
+
+//    public void relax(Clause parent, Edge edge, PriorityQueue<Clause> priorityQueue) {
+//        if (this.getDistance() > parent.getDistance() + edge.getWeight()){
+//            this.setDistance(parent.getDistance() + edge.getWeight());
+//            this.setParent(parent);
+//            priorityQueue.remove(this);
+//            priorityQueue.add(this);
+//        }
+//    }
 
     @Override
     public int hashCode() {

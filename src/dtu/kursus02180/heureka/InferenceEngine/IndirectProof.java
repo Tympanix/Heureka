@@ -2,48 +2,40 @@ package dtu.kursus02180.heureka.InferenceEngine;
 
 import dtu.kursus02180.heureka.Graph.Edge;
 import dtu.kursus02180.heureka.Graph.Graph;
-import dtu.kursus02180.heureka.Graph.Node;
+import dtu.kursus02180.heureka.InferenceEngine.Heuristics.HeuristicIndirect;
 
 import java.util.HashSet;
 import java.util.PriorityQueue;
-import java.util.function.Function;
 
 public class IndirectProof {
 
     private Graph graph;
     private KnowledgeBase knowledgeBase;
-    private PriorityQueue<Node> priorityQueue;
+    private PriorityQueue<Clause> priorityQueue;
     private HashSet<Clause> explored = new HashSet<>();
-    private Function<Clause, Float> heuristicsFunction;
 
     public IndirectProof(KnowledgeBase knowledgeBase){
         this.graph = new Graph();
         this.knowledgeBase = knowledgeBase;
-        this.priorityQueue = new PriorityQueue<>();
+        this.priorityQueue = new PriorityQueue<>(new HeuristicIndirect());
         this.explored = new HashSet<>();
-        this.heuristicsFunction = this::heuristicsFunction;
-    }
-
-    public float heuristicsFunction(Clause clause){
-        return clause.getDistance() + 2 * clause.getClauseLength();
     }
 
     public Clause run(Clause solveOriginal){
 
         // Negate solving clause
-        Clause solve = new Clause(heuristicsFunction);
+        Clause solve = new Clause();
         solve.conclusion.addAll(solveOriginal.premise);
         solve.premise.addAll(solveOriginal.conclusion);
 
         graph.addNode(solve);
 
         solve.setDistance(0);
-        solve.heuristicFunction = this.heuristicsFunction;
         priorityQueue.add(solve);
         explored.add(solve);
 
         while (!priorityQueue.isEmpty()){
-            Clause clause = (Clause) priorityQueue.poll();
+            Clause clause = priorityQueue.poll();
 
             for (Clause rule : knowledgeBase.list){
 

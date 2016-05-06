@@ -2,45 +2,39 @@ package dtu.kursus02180.heureka.InferenceEngine;
 
 import dtu.kursus02180.heureka.Graph.Edge;
 import dtu.kursus02180.heureka.Graph.Graph;
-import dtu.kursus02180.heureka.Graph.Node;
+import dtu.kursus02180.heureka.InferenceEngine.Heuristics.HeuristicDirect;
 
 import java.util.HashSet;
 import java.util.PriorityQueue;
-import java.util.function.Function;
 
 public class DirectProof {
 
     private KnowledgeBase knowledgeBase;
     private Graph graph;
     private HashSet<Clause> explored;
-    private PriorityQueue<Node> priorityQueue;
-    private Function<Clause, Float> heuristicsFunction;
+    private PriorityQueue<Clause> priorityQueue;
     private Clause solve;
 
     public DirectProof(KnowledgeBase knowledgeBase){
         this.knowledgeBase = knowledgeBase;
         this.graph = new Graph();
         this.explored = new HashSet<>();
-        this.priorityQueue = new PriorityQueue<>();
-        this.heuristicsFunction = this::heuristicsFunction;
     }
 
-    public float heuristicsFunction(Clause clause){
-        return clause.getDistance() + 2 * clause.getLiteralsNotIn(this.solve);
-    }
 
     public Clause run(Clause solve){
 
         this.solve = solve;
+        this.priorityQueue = new PriorityQueue<>(new HeuristicDirect(this.solve));
 
         for (Clause rule : knowledgeBase.list){
             rule.setDistance(0);
-            rule.heuristicFunction = heuristicsFunction;
             priorityQueue.add(rule);
+            explored.add(rule);
         }
 
         while (!priorityQueue.isEmpty()){
-            Clause clause = (Clause) priorityQueue.poll();
+            Clause clause = priorityQueue.poll();
 
             for (Clause rule : knowledgeBase.list){
 
