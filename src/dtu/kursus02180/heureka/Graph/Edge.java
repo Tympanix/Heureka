@@ -2,8 +2,8 @@ package dtu.kursus02180.heureka.Graph;
 
 public class Edge {
 
-    Node from;
-    Node to;
+    public Node from;
+    public Node to;
 
     public int getWeight() {
         return weight;

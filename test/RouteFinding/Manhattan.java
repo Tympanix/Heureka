@@ -1,7 +1,7 @@
 package RouteFinding;
 
-import dtu.kursus02180.heureka.RouteFinding.Graph;
-import dtu.kursus02180.heureka.RouteFinding.Node;
+import dtu.kursus02180.heureka.RouteFinding.CityMap;
+import dtu.kursus02180.heureka.RouteFinding.Crossing;
 import dtu.kursus02180.heureka.RouteFinding.Parser;
 import dtu.kursus02180.heureka.RouteFinding.RouteFinding;
 
@@ -12,13 +12,13 @@ public class Manhattan {
 
     public static void main(String[] args) throws IOException {
 
-        Graph graph = new Graph();
+        CityMap graph = new CityMap();
 
         File file = new File("data/manhattan.txt");
         Parser.parse(file, graph);
 
-        Node nodeSource = graph.findNode(0, 0);
-        Node nodeGoal = graph.findNode(9, 9);
+        Crossing nodeSource = graph.findNode(0, 0);
+        Crossing nodeGoal = graph.findNode(9, 9);
 
         System.out.println("Running algortihm!");
         RouteFinding.runAStar(graph, nodeSource, nodeGoal);

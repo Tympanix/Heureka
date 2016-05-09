@@ -1,11 +1,9 @@
 package dtu.kursus02180.heureka.InferenceEngine;
 
-import dtu.kursus02180.heureka.Graph.Edge;
 import dtu.kursus02180.heureka.Graph.Node;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.PriorityQueue;
 import java.util.TreeSet;
 
 public class Clause extends Node {
@@ -141,15 +139,6 @@ public class Clause extends Node {
 
         return stringBuilder.toString();
     }
-
-//    public void relax(Clause parent, Edge edge, PriorityQueue<Clause> priorityQueue) {
-//        if (this.getDistance() > parent.getDistance() + edge.getWeight()){
-//            this.setDistance(parent.getDistance() + edge.getWeight());
-//            this.setParent(parent);
-//            priorityQueue.remove(this);
-//            priorityQueue.add(this);
-//        }
-//    }
 
     @Override
     public int hashCode() {

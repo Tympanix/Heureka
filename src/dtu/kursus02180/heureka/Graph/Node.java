@@ -5,8 +5,8 @@ import java.util.Queue;
 
 public abstract class Node {
 
-    float distance;
-    Node parent;
+    public float distance;
+    public Node parent;
 
     public float getDistance() {
         return distance;

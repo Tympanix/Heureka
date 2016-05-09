@@ -2,14 +2,13 @@ package dtu.kursus02180.heureka.Graph;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 public class Graph {
 
-    HashMap<Node, LinkedList<Edge>> incidenceList;
+    public HashMap<Node, LinkedList<Edge>> incidenceList;
 
     public Graph(){
-        incidenceList = new HashMap<Node, LinkedList<Edge>>();
+        incidenceList = new HashMap<>();
     }
 
     public void addNode(Node node){
@@ -43,7 +42,6 @@ public class Graph {
         showPath(node.parent);
         System.out.println(node);
     }
-
 
 
 }

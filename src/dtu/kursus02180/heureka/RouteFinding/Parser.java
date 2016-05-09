@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class Parser {
 
-    public static void parse(File file, Graph graph) throws IOException {
+    public static void parse(File file, CityMap graph) throws IOException {
 
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -35,11 +35,11 @@ public class Parser {
             int xTo = Integer.parseInt(stringTokenizer.nextToken());
             int yTo = Integer.parseInt(stringTokenizer.nextToken());
 
-            Node nodeFrom = graph.findNode(xFrom, yFrom);
-            if (nodeFrom == null) nodeFrom = new Node(xFrom, yFrom);
+            Crossing nodeFrom = graph.findNode(xFrom, yFrom);
+            if (nodeFrom == null) nodeFrom = new Crossing(xFrom, yFrom);
 
-            Node nodeTo = graph.findNode(xTo, yTo);
-            if (nodeTo == null) nodeTo = new Node(xTo, yTo);
+            Crossing nodeTo = graph.findNode(xTo, yTo);
+            if (nodeTo == null) nodeTo = new Crossing(xTo, yTo);
 
             graph.addEdge(name, nodeFrom, nodeTo);
 
